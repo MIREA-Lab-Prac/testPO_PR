@@ -14,6 +14,7 @@ void printMatrix(const matrix &mat);
 bool inputMatrix(matrix &mat);
 void defineMat();
 void addMat(const matrix &mat1, const matrix &mat2, matrix &result);
+void subtractMat(const matrix &mat1, const matrix &mat2, matrix &result);
 
 
 using namespace std;
@@ -65,6 +66,11 @@ int main(int argc, char *argv[])
         case 1 :
             addMat(matA, matB, result);
             cout << "Addition of Matrix A and Matrix B is:\n";
+            printMatrix(result);
+            break;
+        case 2 :
+            subtractMat(matA, matB, result);
+            cout << "Subtraction of Matrix A and Matrix B is:\n";
             printMatrix(result);
             break;
 
@@ -141,6 +147,15 @@ void addMat(const matrix &mat1, const matrix &mat2, matrix &result)
     }
 }
 
+void subtractMat(const matrix &mat1, const matrix &mat2, matrix &result)
+{
+    for(int i = 0; i < M_SIZE; i++) {
+        for(int j = 0; j < M_SIZE; j++) {
+            result[i][j] = mat1[i][j] - mat2[i][j];
+        }
+    }
+}
+
 // Тесты ............................................................................
 void testMatrix::testAdd()
 {
@@ -159,3 +174,16 @@ void testMatrix::testAdd()
 
 }
 
+void testMatrix::testSub()
+{
+    matrix testA = {{1,2,3}, {3,2,1},{4,5,6}};
+    matrix testB = {{3,5,7}, {5,3,1},{2,3,4}};
+    matrix testResult;
+    QTest::addColumn<matrix>("TestA");
+    QTest::addColumn<matrix>("TestB");
+    QTest::addColumn<matrix>("TestResult");
+    QTest::newRow("MAtrix1") << testA << testB << testResult;
+    subtractMat(testA, testB, testResult);
+    QVERIFY(testResult);
+
+}
